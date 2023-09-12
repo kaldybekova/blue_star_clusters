@@ -6,17 +6,15 @@ from scipy.interpolate import CubicSpline
 from functools import lru_cache
 import time
 
-# количество звёзд в скоплении
-def star_count_in_cluster(min_star_count, max_star_count): # мин кол-во, макс кол-во
-    # генерируем равномерное распредление
+def star_count_in_cluster(min_star_count, max_star_count):
     return round(1 / (np.random.uniform() * (max_star_count**-1 - min_star_count**-1) + min_star_count**-1))
 
 # масса всех звёзд в скоплении
 def star_mass_in_cluster(star_count, min_star_mass, max_star_mass): # число звёзд в скоплении, мин масса, макс масса
     return (1 / (np.random.uniform(0, 1, star_count) * (max_star_mass**-1.35 - min_star_mass**-1.35) + min_star_mass**-1.35))**0.74
 
-@lru_cache(maxsize=10)
-def spline(): #функция строит сплайн
+@lru_cache()
+def spline('mass-time.csv'): #функция строит сплайн
     table = pd.read_csv('mass-time.csv')
     xdata = table['MASS']
     ydata = table['TIME']
